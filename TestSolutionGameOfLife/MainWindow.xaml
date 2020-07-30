@@ -1,0 +1,24 @@
+﻿<Window x:Class="TestSolutionGameOfLife.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TestSolutionGameOfLife"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="700" Width="700" ResizeMode="NoResize" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Menu>
+            <MenuItem Header="Игра">
+                <MenuItem x:Name="StartPauseMenuItem" Header="Старт" Click="Start_Click"/>
+                <MenuItem x:Name="PauseGameMenuItem" Header="Пауза" Click="PauseMenuItem_Click"/>
+            </MenuItem>
+            <MenuItem x:Name="RandomGeneration" Header="Случайная генерация" Click="RandomGeneration_Click"/>
+        </Menu>
+        <Canvas x:Name="gameCanvas" Loaded="GameCanvas_Loaded" Grid.Row="1"/>
+    </Grid>
+</Window>
