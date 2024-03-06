@@ -258,7 +258,7 @@ namespace TestSolutionGameOfLife
         private void SaveGameHistory()
         {
             string jsonGameHistory = JsonConvert.SerializeObject(new GameHistory(startGameField, stopGameField));
-            using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+            using (var sqlConnection = new SqlConnection(connectionString))
             {
                 try
                 {
