@@ -7,7 +7,7 @@ namespace TestSolutionGameOfLife
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(App.Config.GetConnectionString("DbConnection"));
+            optionsBuilder.UseSqlite(App.Config.GetConnectionString("DbConnection"));
         }
     }
 }

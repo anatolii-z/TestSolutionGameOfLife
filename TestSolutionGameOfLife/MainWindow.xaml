@@ -4,8 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TestSolutionGameOfLife"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Title="MainWindow" Height="700" Width="700" ResizeMode="NoResize" Loaded="Window_Loaded">
+        Title="MainWindow" Height="700" Width="700" ResizeMode="NoResize">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -14,11 +20,11 @@
         </Grid.RowDefinitions>
         <Menu>
             <MenuItem Header="Игра">
-                <MenuItem x:Name="StartPauseMenuItem" Header="Старт" Click="Start_Click"/>
-                <MenuItem x:Name="PauseGameMenuItem" Header="Пауза" Click="PauseMenuItem_Click"/>
+                <MenuItem x:Name="StartPauseMenuItem" Header="Старт" Command="{Binding StartCommand}"/>
+                <MenuItem x:Name="PauseGameMenuItem" Header="Пауза" Command="{Binding PauseCommand}"/>
             </MenuItem>
-            <MenuItem x:Name="RandomGeneration" Header="Случайная генерация" Click="RandomGeneration_Click"/>
+            <MenuItem x:Name="RandomGeneration" Header="Случайная генерация" Command="{Binding RandomGenerationCommand}"/>
         </Menu>
-        <Canvas x:Name="gameCanvas" Loaded="GameCanvas_Loaded" Grid.Row="1"/>
+        <Canvas x:Name="gameCanvas" Grid.Row="1"/>
     </Grid>
 </Window>

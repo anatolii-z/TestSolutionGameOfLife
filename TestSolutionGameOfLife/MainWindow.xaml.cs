@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using TestSolutionGameOfLife.ViewModel;
 
 namespace TestSolutionGameOfLife
 {
@@ -20,6 +21,7 @@ namespace TestSolutionGameOfLife
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainWindowViewModel();
         }
 
         private string connectionString = ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
