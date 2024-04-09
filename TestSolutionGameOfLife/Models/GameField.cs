@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestSolutionGameOfLife.ViewModel
+namespace TestSolutionGameOfLife.Models
 {
-    internal class MainWindowViewModel
+    internal class GameField
     {
+        public int Weigh => 80;
+        public int Height => 80;
     }
 }

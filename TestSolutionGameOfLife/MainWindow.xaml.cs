@@ -9,7 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using TestSolutionGameOfLife.ViewModel;
+using TestSolutionGameOfLife.ViewModels;
 
 namespace TestSolutionGameOfLife
 {
@@ -24,7 +24,7 @@ namespace TestSolutionGameOfLife
             DataContext = new MainWindowViewModel();
         }
 
-        private string connectionString = ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
+        
 
         //размер поля
         private const int gameWidth = 80;

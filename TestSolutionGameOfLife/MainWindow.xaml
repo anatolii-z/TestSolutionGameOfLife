@@ -19,11 +19,11 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Menu>
-            <MenuItem Header="Игра">
-                <MenuItem x:Name="StartPauseMenuItem" Header="Старт" Command="{Binding StartCommand}"/>
-                <MenuItem x:Name="PauseGameMenuItem" Header="Пауза" Command="{Binding PauseCommand}"/>
+            <MenuItem Header="Game">
+                <MenuItem x:Name="StartPauseMenuItem" Header="Start" Command="{Binding StartCommand}"/>
+                <MenuItem x:Name="PauseGameMenuItem" Header="Pause" Command="{Binding PauseCommand}"/>
             </MenuItem>
-            <MenuItem x:Name="RandomGeneration" Header="Случайная генерация" Command="{Binding RandomGenerationCommand}"/>
+            <MenuItem x:Name="RandomGeneration" Header="Random generation" Command="{Binding RandomGenerationCommand}"/>
         </Menu>
         <Canvas x:Name="gameCanvas" Grid.Row="1"/>
     </Grid>
