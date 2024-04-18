@@ -260,23 +260,23 @@ namespace TestSolutionGameOfLife
         private void SaveGameHistory()
         {
             string jsonGameHistory = JsonConvert.SerializeObject(new GameHistory(startGameField, stopGameField));
-            using (var sqlConnection = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    sqlConnection.Open();
-                    SqlCommand command = new SqlCommand("save_historyGame", sqlConnection);
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.Add("@start", SqlDbType.DateTime).Value = startTime;
-                    command.Parameters.Add("@stop", SqlDbType.DateTime).Value = stopTime;
-                    command.Parameters.Add("@jsonHistory", SqlDbType.NVarChar).Value = jsonGameHistory;
-                    command.ExecuteNonQuery();
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show("Error: " + e.Message);
-                }
-            }
+            //using (var sqlConnection = new SqlConnection(connectionString))
+            //{
+            //    try
+            //    {
+            //        sqlConnection.Open();
+            //        SqlCommand command = new SqlCommand("save_historyGame", sqlConnection);
+            //        command.CommandType = CommandType.StoredProcedure;
+            //        command.Parameters.Add("@start", SqlDbType.DateTime).Value = startTime;
+            //        command.Parameters.Add("@stop", SqlDbType.DateTime).Value = stopTime;
+            //        command.Parameters.Add("@jsonHistory", SqlDbType.NVarChar).Value = jsonGameHistory;
+            //        command.ExecuteNonQuery();
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        MessageBox.Show("Error: " + e.Message);
+            //    }
+            //}
         }
 
         #region Start Pause Stop

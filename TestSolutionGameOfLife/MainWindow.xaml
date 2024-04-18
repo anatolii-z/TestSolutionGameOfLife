@@ -20,10 +20,10 @@
         </Grid.RowDefinitions>
         <Menu>
             <MenuItem Header="Game">
-                <MenuItem x:Name="StartPauseMenuItem" Header="Start" Command="{Binding StartCommand}"/>
-                <MenuItem x:Name="PauseGameMenuItem" Header="Pause" Command="{Binding PauseCommand}"/>
+                <MenuItem x:Name="StartPauseMenuItem" Header="Start" Command="{Binding StartCommand}" IsEnabled="{Binding CanStart}"/>
+                <MenuItem x:Name="PauseGameMenuItem" Header="Pause" Command="{Binding PauseCommand}" IsEnabled="{Binding CanPause}"/>
             </MenuItem>
-            <MenuItem x:Name="RandomGeneration" Header="Random generation" Command="{Binding RandomGenerationCommand}"/>
+            <MenuItem x:Name="RandomGeneration" Header="Random generation" Command="{Binding RandomGenerationCommand}" IsEnabled="{Binding CanGenerate}"/>
         </Menu>
         <Canvas x:Name="gameCanvas" Grid.Row="1"/>
     </Grid>
