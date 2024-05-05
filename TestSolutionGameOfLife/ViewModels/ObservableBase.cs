@@ -2,7 +2,7 @@
 
 namespace TestSolutionGameOfLife.ViewModels
 {
-    internal class BaseViewModel : INotifyPropertyChanged
+    internal abstract class ObservableBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName = "")

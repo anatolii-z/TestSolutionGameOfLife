@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace TestSolutionGameOfLife
 {
     internal class RelayCommand : ICommand
     {
-        private Action _execute;
+        private Action<string> _execute;
         private Func<bool> _canExecute;
             
         public event EventHandler CanExecuteChanged
@@ -18,7 +14,7 @@ namespace TestSolutionGameOfLife
             remove { CommandManager.RequerySuggested -= value; }
         }
 
-        public RelayCommand(Action execute, Func<bool> canExecute = null)
+        public RelayCommand(Action<string> execute, Func<bool> canExecute = null)
         {
              _execute = execute;
             _canExecute = canExecute;
@@ -31,7 +27,7 @@ namespace TestSolutionGameOfLife
 
         public void Execute(object parameter)
         {
-            _execute?.Invoke();
+            _execute((string)parameter);
         }
     }
 }

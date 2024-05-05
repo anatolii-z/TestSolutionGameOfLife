@@ -1,14 +1,13 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Configuration;
-using System.Data;
-using System.Data.SqlClient;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using TestSolutionGameOfLife.Models;
 using TestSolutionGameOfLife.ViewModels;
 
 namespace TestSolutionGameOfLife
@@ -18,13 +17,56 @@ namespace TestSolutionGameOfLife
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly MainWindowViewModel _mainViewModel; 
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainWindowViewModel();
+            _mainViewModel = new MainWindowViewModel();
+            BuildGameField();
+            DataContext = _mainViewModel;
         }
 
-        
+        public void BuildGameField()
+        {
+            for (int row = 0; row < _mainViewModel.GameFieldSize; row++)
+            {
+                GameField.RowDefinitions.Add(new RowDefinition());
+                for (int column = 0; column < _mainViewModel.GameFieldSize; column++)
+                {
+                    if(row == 0)
+                    {
+                        GameField.ColumnDefinitions.Add(new ColumnDefinition());
+                    }
+                    var cell = _mainViewModel.CreateCell(row, column, CellStatus.Dead);
+                    var rectangle = CreateRectangle(cell);
+                    Grid.SetRow(rectangle, row);
+                    Grid.SetColumn(rectangle, column);
+                    GameField.Children.Add(rectangle);
+                }
+            }
+        }
+
+        private Rectangle CreateRectangle(Cell cell)
+        {
+            var rectangle = new Rectangle();
+            var inputBinding = CreateInputBinding(cell);
+            rectangle.InputBindings.Add(inputBinding);
+            rectangle.DataContext = cell;
+            rectangle.SetBinding(Rectangle.FillProperty, new Binding()
+                {
+                    Path = new PropertyPath("Status"),
+                    Mode = BindingMode.TwoWay,
+                    Converter = new ColorConverter()
+                });
+            return rectangle;
+        }
+
+        private InputBinding CreateInputBinding(Cell cell)
+        {
+            var inputBinding = new InputBinding(_mainViewModel.ChangeCellStatusCommand, new MouseGesture(MouseAction.LeftClick));
+            inputBinding.CommandParameter = $"{cell.Row},{cell.Column}";
+            return inputBinding;
+        }
 
         //размер поля
         private const int gameWidth = 80;
@@ -202,33 +244,6 @@ namespace TestSolutionGameOfLife
         //построение игрового поля
         private void BuildCanvas(bool isRandom)
         {
-            Brush state = Dead;
-            for (int x = 0; x < gameWidth; x++)
-            {
-                for (int y = 0; y < gameHeight; y++)
-                {
-                    if (isRandom)
-                    {
-                        int index = random.Next(0, 2);
-                        state = index == 1 ? Alive : Dead;
-                    }
-                    Rectangle rectangle = new Rectangle
-                    {
-                        Width = gameCanvas.ActualWidth / gameWidth - spacing,
-                        Height = gameCanvas.ActualHeight / gameHeight - spacing,
-                        Fill = state
-                    };
-                    gameCanvas.Children.Add(rectangle);
-
-                    Canvas.SetLeft(rectangle, x * gameCanvas.ActualWidth / gameWidth);
-                    Canvas.SetTop(rectangle, y * gameCanvas.ActualHeight / gameHeight);
-
-                    matrix[x, y] = rectangle;
-
-                    rectangle.MouseDown += RectangleMouseEnter;
-                    rectangle.MouseEnter += RectangleMouseEnter;
-                }
-            }
         }
 
         private void RectangleMouseEnter(object sender, MouseEventArgs e)
@@ -240,8 +255,6 @@ namespace TestSolutionGameOfLife
             rectangle.Fill = rectangle.Fill == Alive ? Dead : Alive;
         }
 
-        private void GameCanvas_Loaded(object sender, RoutedEventArgs e) => BuildCanvas(false);
-
         private void GameTick(object sender, EventArgs e) => Next();
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -252,7 +265,7 @@ namespace TestSolutionGameOfLife
 
         private void RandomGeneration_Click(object sender, RoutedEventArgs e)
         {
-            gameCanvas.Children.Clear();
+            //gameCanvas.Children.Clear();
             BuildCanvas(true);
         }
 
@@ -260,23 +273,6 @@ namespace TestSolutionGameOfLife
         private void SaveGameHistory()
         {
             string jsonGameHistory = JsonConvert.SerializeObject(new GameHistory(startGameField, stopGameField));
-            //using (var sqlConnection = new SqlConnection(connectionString))
-            //{
-            //    try
-            //    {
-            //        sqlConnection.Open();
-            //        SqlCommand command = new SqlCommand("save_historyGame", sqlConnection);
-            //        command.CommandType = CommandType.StoredProcedure;
-            //        command.Parameters.Add("@start", SqlDbType.DateTime).Value = startTime;
-            //        command.Parameters.Add("@stop", SqlDbType.DateTime).Value = stopTime;
-            //        command.Parameters.Add("@jsonHistory", SqlDbType.NVarChar).Value = jsonGameHistory;
-            //        command.ExecuteNonQuery();
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        MessageBox.Show("Error: " + e.Message);
-            //    }
-            //}
         }
 
         #region Start Pause Stop
