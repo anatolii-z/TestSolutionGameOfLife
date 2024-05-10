@@ -1,6 +1,8 @@
 ﻿using System;
+using System.IO.Packaging;
 using System.Linq;
 using System.Windows.Input;
+using TestSolutionGameOfLife.Core;
 using TestSolutionGameOfLife.Models;
 
 namespace TestSolutionGameOfLife.ViewModels
@@ -12,6 +14,7 @@ namespace TestSolutionGameOfLife.ViewModels
         private bool _canPause;
         private bool _canRandomGeneration;
 
+        private readonly GameEngine _engine;
         private readonly Cell[,] _cellMatrix;
         #endregion
 
@@ -43,13 +46,12 @@ namespace TestSolutionGameOfLife.ViewModels
                 OnPropertyChanged(nameof(CanGenerate));
             } 
         }
-
-        public int GameFieldSize => 50;
         #endregion
 
         public MainWindowViewModel()
         {
-            _cellMatrix = new Cell[GameFieldSize, GameFieldSize];
+            _cellMatrix = new Cell[GameEngine.GameFieldSize, GameEngine.GameFieldSize];
+            _engine = new GameEngine();
         }
 
         #region Commands
@@ -69,7 +71,9 @@ namespace TestSolutionGameOfLife.ViewModels
 
         private void StartGame()
         {
-            throw new NotImplementedException();
+            CanPause = true;
+            CanGenerate = false;
+            _engine.Start();
         }
 
         private void PauseGame()
@@ -80,6 +84,11 @@ namespace TestSolutionGameOfLife.ViewModels
         private void GenerateGameField()
         {
             throw new NotImplementedException();
+        }
+
+        public int GetGameFieldSize()
+        {
+            return GameEngine.GameFieldSize;
         }
 
         private void ChangeCellStatus(string coordinate)

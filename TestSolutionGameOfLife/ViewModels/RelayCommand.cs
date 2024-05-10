@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace TestSolutionGameOfLife
+namespace TestSolutionGameOfLife.ViewModels
 {
     internal class RelayCommand : ICommand
     {

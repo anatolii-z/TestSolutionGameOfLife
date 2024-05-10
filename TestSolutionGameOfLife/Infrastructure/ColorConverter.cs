@@ -12,16 +12,16 @@ namespace TestSolutionGameOfLife
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(value is CellStatus)
+            if (value is CellStatus status)
             {
-                return (CellStatus)value == CellStatus.Alive ? Alive : Dead;
+                return status == CellStatus.Alive ? Alive : Dead;
             }
             return Dead;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(value is SolidColorBrush && (SolidColorBrush)value == Alive)
+            if (value is SolidColorBrush brush && brush == Alive)
             {
                 return CellStatus.Alive;
             }

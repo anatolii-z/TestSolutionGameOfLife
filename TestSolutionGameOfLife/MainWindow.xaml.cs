@@ -28,10 +28,10 @@ namespace TestSolutionGameOfLife
 
         public void BuildGameField()
         {
-            for (int row = 0; row < _mainViewModel.GameFieldSize; row++)
+            for (int row = 0; row < _mainViewModel.GetGameFieldSize(); row++)
             {
                 GameField.RowDefinitions.Add(new RowDefinition());
-                for (int column = 0; column < _mainViewModel.GameFieldSize; column++)
+                for (int column = 0; column < _mainViewModel.GetGameFieldSize(); column++)
                 {
                     if(row == 0)
                     {
@@ -63,8 +63,10 @@ namespace TestSolutionGameOfLife
 
         private InputBinding CreateInputBinding(Cell cell)
         {
-            var inputBinding = new InputBinding(_mainViewModel.ChangeCellStatusCommand, new MouseGesture(MouseAction.LeftClick));
-            inputBinding.CommandParameter = $"{cell.Row},{cell.Column}";
+            var inputBinding = new InputBinding(_mainViewModel.ChangeCellStatusCommand, new MouseGesture(MouseAction.LeftClick))
+            {
+                CommandParameter = $"{cell.Row},{cell.Column}"
+            };
             return inputBinding;
         }
 

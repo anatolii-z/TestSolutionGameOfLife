@@ -8,6 +8,7 @@ namespace TestSolutionGameOfLife.Models
 
         public int Row { get; set; }
         public int Column { get; set; }
+        public int AliveNeighbourCount { get; set; }
         public CellStatus Status
         {
             get { return _status; }
