@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Threading;
+using TestSolutionGameOfLife.Models;
 
 namespace TestSolutionGameOfLife.Core
 {
     public class GameEngine
     {
         private readonly DispatcherTimer _timer;
+
+        private readonly Cell[,] _cellMatrix;
         public static int GameFieldSize => 50;
 
         public GameEngine()
@@ -15,18 +19,91 @@ namespace TestSolutionGameOfLife.Core
                 Interval = TimeSpan.FromMilliseconds(50)
             };
             _timer.Tick += GameTick;
+            _cellMatrix = new Cell[GameFieldSize, GameFieldSize];
         }
 
-        private void GameTick(object sender, EventArgs e) => NextGeneration();
+        private void GameTick(object sender, EventArgs e) => CreateNextGeneration();
 
         internal void Start()
         {
             _timer.Start();
         }
 
-        private void NextGeneration()
+        private void CreateNextGeneration()
         {
+            CheckNeighbors();
+            SetCellStatus();
+        }
 
+        internal Cell CreateCell(int row, int column, CellStatus status)
+        {
+            var cell = new Cell(row, column, status);
+            _cellMatrix[row, column] = cell;
+            return cell;
+        }
+
+        internal void ChangeCellStatus(string coordinate)
+        {
+            var t = coordinate.Split(',').Select(x => int.Parse(x)).ToList();
+            _cellMatrix[t[0], t[1]].Status = _cellMatrix[t[0], t[1]].Status == CellStatus.Alive ? 
+                CellStatus.Dead : CellStatus.Alive;
+        }
+
+        private void CheckNeighbors()
+        {
+            for(var i = 0; i < GameFieldSize; i++)
+            {
+                for(var j = 0; j < GameFieldSize; j++)
+                {
+                    _cellMatrix[i, j].AliveNeighbourCount = 0;
+
+                    if(CheckCoordinate(i - 1, j - 1) && _cellMatrix[i - 1, j - 1].Status == CellStatus.Alive)
+                        _cellMatrix[i,j].AliveNeighbourCount++;
+                    if (CheckCoordinate(i, j - 1) && _cellMatrix[i, j - 1].Status == CellStatus.Alive)
+                        _cellMatrix[i, j].AliveNeighbourCount++;
+                    if (CheckCoordinate(i + 1, j - 1) && _cellMatrix[i + 1, j - 1].Status == CellStatus.Alive)
+                        _cellMatrix[i, j].AliveNeighbourCount++;
+                    if (CheckCoordinate(i - 1, j) && _cellMatrix[i - 1, j].Status == CellStatus.Alive)
+                        _cellMatrix[i, j].AliveNeighbourCount++;
+                    if (CheckCoordinate(i + 1, j) && _cellMatrix[i + 1, j].Status == CellStatus.Alive)
+                        _cellMatrix[i, j].AliveNeighbourCount++;
+                    if (CheckCoordinate(i - 1, j + 1) && _cellMatrix[i - 1, j + 1].Status == CellStatus.Alive)
+                        _cellMatrix[i, j].AliveNeighbourCount++;
+                    if (CheckCoordinate(i, j + 1) && _cellMatrix[i, j + 1].Status == CellStatus.Alive)
+                        _cellMatrix[i, j].AliveNeighbourCount++;
+                    if (CheckCoordinate(i + 1, j + 1) && _cellMatrix[i + 1, j + 1].Status == CellStatus.Alive)
+                        _cellMatrix[i, j].AliveNeighbourCount++;
+                }
+            }
+        }
+
+        private bool CheckCoordinate(int x, int y)
+        {
+            return (x >= 0 && x < GameFieldSize) && (y >= 0 && y < GameFieldSize);
+        }
+
+        private void SetCellStatus()
+        {
+            for(var i = 0; i < GameFieldSize; i++)
+            {
+                for(var j = 0; j < GameFieldSize; j++)
+                {
+                    var cell = _cellMatrix[i, j];
+
+                    if (cell.Status == CellStatus.Alive && cell.AliveNeighbourCount <= 1)
+                    {
+                        cell.Status = CellStatus.Dead;
+                    }
+                    else if (cell.Status == CellStatus.Alive && cell.AliveNeighbourCount >= 4)
+                    {
+                        cell.Status = CellStatus.Dead;
+                    }
+                    else if (cell.Status == CellStatus.Dead && cell.AliveNeighbourCount == 3)
+                    {
+                        cell.Status = CellStatus.Alive;
+                    }
+                }
+            }
         }
     }
 }

@@ -15,7 +15,6 @@ namespace TestSolutionGameOfLife.ViewModels
         private bool _canRandomGeneration;
 
         private readonly GameEngine _engine;
-        private readonly Cell[,] _cellMatrix;
         #endregion
 
         #region Properties
@@ -50,7 +49,6 @@ namespace TestSolutionGameOfLife.ViewModels
 
         public MainWindowViewModel()
         {
-            _cellMatrix = new Cell[GameEngine.GameFieldSize, GameEngine.GameFieldSize];
             _engine = new GameEngine();
         }
 
@@ -93,15 +91,12 @@ namespace TestSolutionGameOfLife.ViewModels
 
         private void ChangeCellStatus(string coordinate)
         {
-            var t = coordinate.Split(',').Select(x=> int.Parse(x)).ToList();
-            _cellMatrix[t[0], t[1]].Status = _cellMatrix[t[0], t[1]].Status == CellStatus.Alive ? CellStatus.Dead : CellStatus.Alive;
+            _engine.ChangeCellStatus(coordinate);
         }
 
         public Cell CreateCell(int row, int column, CellStatus status)
         {
-            var cell = new Cell(row, column, status);
-            _cellMatrix[row, column] = cell;
-            return cell;
+            return _engine.CreateCell(row, column, status);
         }
     }
 }
