@@ -29,6 +29,23 @@ namespace TestSolutionGameOfLife.Core
             _timer.Start();
         }
 
+        internal void Pause()
+        {
+            _timer.Stop();
+        }
+
+        internal void RandomGenerateCellStatus()
+        {
+            var random = new Random();
+            for(var i = 0; i < GameFieldSize; i++)
+            {
+                for(var j = 0; j < GameFieldSize; j++)
+                {
+                    _cellMatrix[i, j].Status = (CellStatus)random.Next(2);
+                }
+            }
+        }
+
         private void CreateNextGeneration()
         {
             CheckNeighbors();
@@ -42,13 +59,20 @@ namespace TestSolutionGameOfLife.Core
             return cell;
         }
 
-        internal void ChangeCellStatus(string coordinate)
+        /// <summary>
+        /// Changing cell status based on user input
+        /// </summary>
+        /// <param name="coordinates">String with coordinates</param>
+        internal void ChangeCellStatus(string coordinates)
         {
-            var t = coordinate.Split(',').Select(x => int.Parse(x)).ToList();
+            var t = coordinates.Split(',').Select(x => int.Parse(x)).ToList();
             _cellMatrix[t[0], t[1]].Status = _cellMatrix[t[0], t[1]].Status == CellStatus.Alive ? 
                 CellStatus.Dead : CellStatus.Alive;
         }
 
+        /// <summary>
+        /// Counting living cells around each cell
+        /// </summary>
         private void CheckNeighbors()
         {
             for(var i = 0; i < GameFieldSize; i++)
@@ -77,11 +101,17 @@ namespace TestSolutionGameOfLife.Core
             }
         }
 
-        private bool CheckCoordinate(int x, int y)
-        {
-            return (x >= 0 && x < GameFieldSize) && (y >= 0 && y < GameFieldSize);
-        }
+        /// <summary>
+        /// Check coordinates
+        /// </summary>
+        /// <param name="x">Row</param>
+        /// <param name="y">Column</param>
+        /// <returns></returns>
+        private bool CheckCoordinate(int x, int y) => (x >= 0 && x < GameFieldSize) && (y >= 0 && y < GameFieldSize);
 
+        /// <summary>
+        /// Set cell status based on living neighbors and its status
+        /// </summary>
         private void SetCellStatus()
         {
             for(var i = 0; i < GameFieldSize; i++)

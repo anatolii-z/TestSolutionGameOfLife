@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO.Packaging;
-using System.Linq;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using TestSolutionGameOfLife.Core;
 using TestSolutionGameOfLife.Models;
 
@@ -69,6 +66,7 @@ namespace TestSolutionGameOfLife.ViewModels
 
         private void StartGame()
         {
+            CanStart = false;
             CanPause = true;
             CanGenerate = false;
             _engine.Start();
@@ -76,12 +74,15 @@ namespace TestSolutionGameOfLife.ViewModels
 
         private void PauseGame()
         {
-            throw new NotImplementedException();
+            CanPause = false;
+            CanStart = true;
+            CanGenerate = true;
+            _engine.Pause();
         }
 
         private void GenerateGameField()
         {
-            throw new NotImplementedException();
+            _engine.RandomGenerateCellStatus();
         }
 
         public int GetGameFieldSize()
